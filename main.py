@@ -74,4 +74,35 @@ def get_spell_details(spell_name):
     for desc in spell_data['desc']:
         print(f"- {desc}")
 
-get_class_details('bard')
+def get_level_details(class_name):
+    request = requests.get(f'https://www.dnd5eapi.co/api/classes/{class_name}/levels')
+
+    if request.status_code == 200:
+        class_data = request.json()
+
+    else:
+        class_data = None
+    
+    for level in class_data:
+        print(f"\n{level['level']}:\n-------------")
+        print(f"Ability Score Improvement: {level['ability_score_bonuses']}")
+        print(f"Proficiency Bonus: {level['prof_bonus']}")
+        for feature in level['features']:
+            print(f"Feature: {feature['name']}")
+        if 'spellcasting' in level.keys():
+
+            print(f"Cantrips Known: {level['spellcasting']['cantrips_known']}")
+            for spell_slot_level in range(1, 10):
+                print(f"Spell Slots Level {spell_slot_level}: {level['spellcasting'][f'spell_slots_level_{spell_slot_level}']}")
+
+
+        print(f"Class Specific:")
+
+        for feature, value in level['class_specific'].items():
+            print(f"{feature.replace("_"," ").title()}: {value}")           
+
+
+
+for class_name in ['rogue', 'sorcerer', 'warlock', 'wizard']:
+    print(class_name)
+    get_level_details(class_name)

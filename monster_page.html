@@ -1,0 +1,129 @@
+{% extends "base.html" %} {% block content %}
+<div class="monster-container">
+  <h1>{{ monster_data.name }}</h1>
+  <p><strong>Size:</strong> {{ monster_data.size }}</p>
+  <p><strong>Type:</strong> {{ monster_data.type }}</p>
+  <p><strong>Alignment:</strong> {{ monster_data.alignment }}</p>
+
+  {% if monster_data.image %}
+  <h2>Image:</h2>
+  <img src="{{ monster_data.image }}" alt="{{ monster_data.name }}" />
+  {% endif %}
+
+  <h2>Armor Class:</h2>
+  <ul>
+    {% for ac in monster_data.armor_class %} {% for key, value in ac.items %} {%
+    if key == 'armor' %}
+    <li>
+      <strong>Armor:</strong>
+      <ul>
+        {% for arm_dict in value %}
+        <li>{{ arm_dict.name }}</li>
+        {% endfor %}
+      </ul>
+    </li>
+    {% else %}
+    <li><strong>{{ key|title }}:</strong> {{ value }}</li>
+    {% endif %} {% endfor %} {% endfor %}
+  </ul>
+
+  <p><strong>Hit Points:</strong> {{ monster_data.hit_points }}</p>
+  <p><strong>Hit Dice:</strong> {{ monster_data.hit_dice }}</p>
+
+  <h2>Speed:</h2>
+  <ul>
+    {% for key, value in monster_data.speed.items %}
+    <li><strong>{{ key|title }}:</strong> {{ value }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Attributes:</h2>
+  <ul>
+    <li><strong>Strength:</strong> {{ monster_data.strength }}</li>
+    <li><strong>Dexterity:</strong> {{ monster_data.dexterity }}</li>
+    <li><strong>Constitution:</strong> {{ monster_data.constitution }}</li>
+    <li><strong>Intelligence:</strong> {{ monster_data.intelligence }}</li>
+    <li><strong>Wisdom:</strong> {{ monster_data.wisdom }}</li>
+    <li><strong>Charisma:</strong> {{ monster_data.charisma }}</li>
+  </ul>
+
+  <h2>Proficiencies:</h2>
+  <ul>
+    {% for proficiency in monster_data.proficiencies %}
+    <li>{{ proficiency.proficiency.name }} - {{ proficiency.value }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Damage Vulnerabilities:</h2>
+  <ul>
+    {% for damage in monster_data.damage_vulnerabilities %}
+    <li>{{ damage|title }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Damage Resistances:</h2>
+  <ul>
+    {% for damage in monster_data.damage_resistances %}
+    <li>{{ damage|title }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Damage Immunities:</h2>
+  <ul>
+    {% for damage in monster_data.damage_immunities %}
+    <li>{{ damage|title }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Condition Immunities:</h2>
+  <ul>
+    {% for condition in monster_data.condition_immunities %}
+    <li>{{ condition.name }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Senses:</h2>
+  <ul>
+    {% for key, value in monster_data.senses.items %}
+    <li><strong>{{ key|title }}:</strong> {{ value }}</li>
+    {% endfor %}
+  </ul>
+
+  <p><strong>Languages:</strong> {{ monster_data.languages }}</p>
+  <p><strong>Challenge Rating:</strong> {{ monster_data.challenge_rating }}</p>
+
+  <h2>Special Abilities:</h2>
+  <ul>
+    {% for ability in monster_data.special_abilities %}
+    <li><strong>{{ ability.name }}:</strong> {{ ability.desc }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Actions:</h2>
+  <ul>
+    {% for action in monster_data.actions %}
+    <li>
+      <strong>{{ action.name }}:</strong> {{ action.desc }} {% if
+      action.attack_bonus %} <br /><strong>Attack Bonus:</strong> {{
+      action.attack_bonus }} {% endif %} {% if action.damage %}
+      <ul>
+        {% for dmg in action.damage %}
+        <li>
+          <strong>Damage:</strong> {{ dmg.damage_dice }} {{ dmg.damage_type.name
+          }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h2>Legendary Actions:</h2>
+  <ul>
+    {% for la in monster_data.legendary_actions %}
+    <li><strong>{{ la.name }}:</strong> {{ la.desc }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
